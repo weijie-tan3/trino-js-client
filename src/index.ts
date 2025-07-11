@@ -35,6 +35,11 @@ export class BasicAuth implements Auth {
   constructor(readonly username: string, readonly password?: string) {}
 }
 
+export class OAuthAuth implements Auth {
+  readonly type: AuthType = 'oauth';
+  constructor() {}
+}
+
 export type Session = {[key: string]: string};
 
 export type ExtraCredential = {[key: string]: string};
@@ -204,6 +209,15 @@ class Client {
       };
 
       headers[TRINO_USER_HEADER] = basic.username;
+    }
+
+    if (options.auth && options.auth.type === 'oauth') {
+      // For OAuth, we don't set basic auth credentials
+      // The OAuth flow will be handled through server challenges
+      // Set a default user if not provided elsewhere
+      if (!headers[TRINO_USER_HEADER]) {
+        headers[TRINO_USER_HEADER] = DEFAULT_USER;
+      }
     }
 
     clientConfig.headers = cleanHeaders(headers);

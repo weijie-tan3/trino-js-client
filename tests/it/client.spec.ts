@@ -1,4 +1,4 @@
-import {BasicAuth, QueryData, Trino} from '../../src';
+import {BasicAuth, OAuthAuth, QueryData, Trino} from '../../src';
 
 const allCustomerQuery = 'select * from customer';
 const limit = 1;
@@ -174,5 +174,18 @@ describe('trino', () => {
       ...(row.data ?? []),
     ]);
     expect(sales).toHaveLength(limit);
+  });
+
+  test('oauth auth instantiation', () => {
+    const oauthAuth = new OAuthAuth();
+    expect(oauthAuth.type).toBe('oauth');
+    
+    // Test that OAuth client can be created without errors
+    const trino = Trino.create({
+      catalog: 'tpcds',
+      schema: 'sf100000',
+      auth: oauthAuth,
+    });
+    expect(trino).toBeDefined();
   });
 });

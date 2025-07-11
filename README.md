@@ -14,6 +14,7 @@ this project.
 
 - Connections over HTTP or HTTPS
 - Supports HTTP Basic Authentication
+- Supports OAuth2 external authentication
 - Per-query user information for access control
 
 ## Requirements
@@ -32,12 +33,28 @@ For additional info on all available methods and types [have a look at the
 
 ### Create a Trino client
 
+First, import the necessary classes:
+```typescript
+import { Trino, BasicAuth, OAuthAuth } from 'trino-client';
+```
+
+With Basic Authentication:
 ```typescript
 const trino: Trino = Trino.create({
   server: 'http://localhost:8080',
   catalog: 'tpcds',
   schema: 'sf100000',
   auth: new BasicAuth('test'),
+});
+```
+
+With OAuth2 external authentication:
+```typescript
+const trino: Trino = Trino.create({
+  server: 'http://localhost:8080',
+  catalog: 'tpcds',
+  schema: 'sf100000',
+  auth: new OAuthAuth(),
 });
 ```
 
