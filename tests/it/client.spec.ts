@@ -188,4 +188,17 @@ describe('trino', () => {
     });
     expect(trino).toBeDefined();
   });
+
+  test('oauth auth comparison', () => {
+    const oauthAuth1 = new OAuthAuth();
+    const oauthAuth2 = new OAuthAuth();
+    const basicAuth = new BasicAuth('test');
+    
+    // OAuth auth instances should be equal
+    expect(oauthAuth1).toEqual(oauthAuth2);
+    
+    // OAuth and Basic auth should be different
+    expect(oauthAuth1).not.toEqual(basicAuth);
+    expect(oauthAuth1.type).not.toBe(basicAuth.type);
+  });
 });
